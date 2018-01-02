@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tetris Test</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+          integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/tetris.css">
+</head>
+<body>
+<div class="tetris d-flex justify-content-center">
+    <div id="tetris-board" class="d-flex flex-column align-self-center"></div>
+    <div id="tetris-score-panel" class="d-flex flex-column align-self-center ml-4">
+        <div class="d-flex flex-column align-items-center">
+            <p>NEXT</p>
+            <div id="tetris-next-block" class="d-flex flex-column align-self-center"></div>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+            <p>LEVEL</p>
+            <p id="tetris-level">0</p>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+            <p>POINTS</p>
+            <p id="tetris-points">00000</p>
+        </div>
+    </div>
+</div>
+
+<!--<button id="control-left">LEFT</button>-->
+<!--<button id="control-right">RIGHT</button>-->
+<!--<br/>-->
+<!--<button id="control-down">DOWN</button>-->
+<!--<button id="control-rotate">ROTATE</button>-->
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
+        integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
+<script src="js/blocks.js"></script>
+<script src="js/tetris.js"></script>
+</html>

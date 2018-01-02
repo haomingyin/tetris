@@ -1,0 +1,45 @@
+@font-face {
+    font-family: "digital-7-mono";
+    src: url("digital-7-mono.ttf");
+}
+
+.tetris {
+    background-color: #f9f9f9;
+    width: 100vw;
+    height: 100vh;
+}
+
+.tetris-col {
+    width: 35px;
+    height: 35px;
+    margin: 1px;
+    background-color: #e2e2e2;
+}
+
+.tetris-empty {
+    background-color: #e2e2e2;
+}
+
+.tetris-fixed, .tetris-next-fixed, .tetris-moving {
+    background-color: #919191;
+}
+
+.tetris-cancel {
+    background-color: #ff8383;
+}
+
+#tetris-score-panel {
+    font-size: 22px;
+    color: #575757;
+}
+
+#tetris-next-block {
+    height: 150px;
+    width: 150px;
+}
+
+#tetris-points, #tetris-level {
+    font-family: "digital-7-mono";
+    font-size: 32px;
+    color: #858585;
+}
