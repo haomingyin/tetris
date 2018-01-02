@@ -229,6 +229,28 @@ function displayGameLevel(level = GAME_LEVEL) {
     $('#tetris-level').text(level);
 }
 
+function showInfoPane() {
+    $('#tetris-board-info-pane').show();
+    $('#tetris-board-info-bg').show();
+    $('#tetris-board').addClass('tetris-blur');
+}
+
+function hideInfoPane() {
+    $('#tetris-board').removeClass('tetris-blur');
+    $('#tetris-board-info-bg').hide();
+    $('#tetris-board-info-pane').hide();
+}
+
+function showResume() {
+    showInfoPane();
+    $('#tetris-board-info-resume').show();
+}
+
+function hideResume() {
+    hideInfoPane();
+    $('#tetris-board-info-resume').hide();
+}
+
 function setCellStatus(row, col, status = CELL_STATUS_EMPTY) {
     return getCell(row, col)
         .removeClass(`${CELL_STATUS_EMPTY} 
@@ -286,9 +308,14 @@ function bindGestures() {
     hammer.on('doubletap', pauseGame);
 }
 
+function bindClicks() {
+    $('#tetris-board-info-resume').on('click', pauseGame);
+}
+
 function initControllers() {
     bindKeyStrokes();
     bindGestures();
+    bindClicks();
 }
 
 function stopTimer() {
@@ -306,11 +333,13 @@ function pauseGame() {
         waitAndLockMutex(() => {
             GAME_PAUSED = true;
             stopTimer();
+            showResume();
             printLog('Game has been paused.');
         });
     } else {
         GAME_PAUSED = false;
         setUpTimer();
+        hideResume();
         printLog('Game has been resumed.');
         unlockMutex();
     }

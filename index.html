@@ -6,11 +6,22 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
           integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" href="css/tetris.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
 </head>
 <body>
 <div class="background-img"></div>
-<div class="tetris d-flex justify-content-center">
-    <div id="tetris-board" class="d-flex flex-column align-self-center"></div>
+<div class="tetris d-flex flex-row align-items-center justify-content-center">
+    <div id="tetris-board-container">
+        <div id="tetris-board" class="d-flex flex-column align-self-center"></div>
+        <div id="tetris-board-info-pane" class="d-flex flex-column justify-content-center align-items-center">
+            <div id="tetris-board-info-bg"></div>
+            <div id="tetris-board-info-resume">
+                <i class="far fa-play-circle"></i>
+            </div>
+        </div>
+
+    </div>
+
     <div id="tetris-score-panel" class="d-flex flex-column align-self-center ml-4">
         <div class="d-flex flex-column align-items-center">
             <p>NEXT</p>

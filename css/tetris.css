@@ -5,18 +5,62 @@
 
 .background-img {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    filter: blur(5px);
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    filter: blur(7px);
     z-index: -1;
+}
+
+.tetris-blur {
+    filter: blur(4px);
 }
 
 .tetris {
     background-color: rgba(255, 255, 255, 0.1);
     width: 100vw;
     height: 100vh;
+}
+
+#tetris-board-container {
+    position: relative;
+}
+
+/* tetris board info pane */
+#tetris-board-info-pane, #tetris-board-info-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#tetris-board-info-pane {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#tetris-board-info-bg {
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.3);
+    filter: blur(4px);
+}
+
+#tetris-board-info-resume {
+    font-size: 100px;
+    z-index: 3;
+}
+
+#tetris-board-info-resume:hover {
+    font-size: 110px;
+    color: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+}
+
+/* tetris board */
+#tetris-board {
+    padding: 5px;
+    z-index: 1;
 }
 
 .tetris-col {
@@ -38,18 +82,19 @@
     background-color: rgba(255, 131, 131, 0.8);
 }
 
+/* Tetris score pane */
 #tetris-score-panel {
-    font-size: 25px;
+    font-size: 35px;
     color: rgba(0, 0, 0, 0.65);
 }
 
 #tetris-next-block {
     height: 200px;
-    width: 150px;
+    width: 180px;
 }
 
 #tetris-points, #tetris-level {
     font-family: "digital-7-mono";
-    font-size: 35px;
+    font-size: 50px;
     color: rgba(0, 0, 0, 0.5);
 }
