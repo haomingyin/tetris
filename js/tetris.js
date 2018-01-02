@@ -395,7 +395,7 @@ function speedUpGame() {
 }
 
 function updateGamePoints(combo = 1) {
-    let gained = Math.round(100 * (combo + (combo - 1) * 0.1));
+    let gained = Math.round(100 * (combo + (combo * combo - 1) * 0.1));
     GAME_POINTS += gained;
     printLog(`Gained ${gained}pts to total ${GAME_POINTS}pts.`);
     if (GAME_POINTS >= (GAME_LEVEL + 1) * 1000) {
