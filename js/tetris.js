@@ -360,6 +360,7 @@ function rotateBlock() {
     lockMutex(() => {
         if (isMovable(TOP_PADDING, RIGHT_PADDING, blocks[BLOCK.index][BLOCK.next])) {
             BLOCK = blocks[BLOCK.index][BLOCK.next];
+            updateMovingBlock();
             printLog(`Rotate block to ${BLOCK.name}`);
         } else {
             printLog(`Failed to rotate block ${BLOCK.name}`);
