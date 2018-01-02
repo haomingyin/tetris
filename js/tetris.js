@@ -60,7 +60,7 @@ function initBlock() {
     initNextBlock();
 
     TOP_PADDING = -BLOCK.row;
-    RIGHT_PADDING = 4;
+    RIGHT_PADDING = Math.floor((COL - BLOCK.col) / 2);
     printLog(`Initialized block ${BLOCK.name} with TOP_PADDING=${TOP_PADDING}, RIGHT_PADDING=${RIGHT_PADDING}.`);
 }
 
