@@ -247,13 +247,7 @@ function setRowStatus(row, status = CELL_STATUS_EMPTY) {
 /**************************************
  * CONTROLLER
  **************************************/
-
-function initControllers() {
-    $('#control-left').click(moveLeft);
-    $('#control-right').click(moveRight);
-    $('#control-down').click(moveDown);
-    $('#control-rotate').click(rotateBlock);
-
+function bindKeyStrokes() {
     $(document).keydown(e => {
         switch (e.which) {
             case 13: // ENTER
@@ -279,6 +273,22 @@ function initControllers() {
         }
         e.preventDefault();
     });
+}
+
+function bindGestures() {
+    let hammer = new Hammer(document.getElementsByTagName('body')[0]);
+
+    hammer.get('swipe').set({direction: Hammer.DIRECTION_ALL});
+    hammer.on('swipeleft', moveLeft);
+    hammer.on('swiperight', moveRight);
+    hammer.on('swipedown', moveDown);
+    hammer.on('swipeup', rotateBlock);
+    hammer.on('doubletap', pauseGame);
+}
+
+function initControllers() {
+    bindKeyStrokes();
+    bindGestures();
 }
 
 function stopTimer() {
