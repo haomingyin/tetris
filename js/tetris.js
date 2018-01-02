@@ -249,22 +249,10 @@ function setRowStatus(row, status = CELL_STATUS_EMPTY) {
  **************************************/
 
 function initControllers() {
-    $('#control-left').click(() => {
-        lockMutex(moveLeft);
-        unlockMutex();
-    });
-    $('#control-right').click(() => {
-        lockMutex(moveRight);
-        unlockMutex();
-    });
-    $('#control-down').click(() => {
-        lockMutex(moveDown);
-        unlockMutex();
-    });
-    $('#control-rotate').click(() => {
-        lockMutex(rotateBlock);
-        unlockMutex();
-    });
+    $('#control-left').click(moveLeft);
+    $('#control-right').click(moveRight);
+    $('#control-down').click(moveDown);
+    $('#control-rotate').click(rotateBlock);
 
     $(document).keydown(e => {
         switch (e.which) {
@@ -272,31 +260,19 @@ function initControllers() {
                 pauseGame();
                 break;
             case 32: // space
-                lockMutex(rotateBlock);
+                rotateBlock();
                 break;
             case 37: // left arrow
-                lockMutex(moveLeft);
+                moveLeft();
                 break;
             case 38: // up arrow
-                lockMutex(rotateBlock);
+                rotateBlock();
                 break;
             case 39: // right arrow
-                lockMutex(moveRight);
+                moveRight();
                 break;
             case 40: // down arrow
-                lockMutex(moveDown);
-                break;
-            case 65: // key a
-                lockMutex(moveLeft);
-                break;
-            case 68: // key d
-                lockMutex(moveRight);
-                break;
-            case 83: // key s
-                lockMutex(moveDown);
-                break;
-            case 87: // key w
-                lockMutex(rotateBlock);
+                moveDown();
                 break;
             default:
                 break;
@@ -332,45 +308,53 @@ function pauseGame() {
 }
 
 function moveLeft() {
-    if (isMovable(TOP_PADDING, RIGHT_PADDING + 1, BLOCK)) {
-        RIGHT_PADDING += 1;
-        printMovementLog('left');
-        updateMovingBlock();
-    }
-    printMovementLog('left', 0);
+    lockMutex(() => {
+        if (isMovable(TOP_PADDING, RIGHT_PADDING + 1, BLOCK)) {
+            RIGHT_PADDING += 1;
+            printMovementLog('left');
+            updateMovingBlock();
+        }
+        printMovementLog('left', 0);
+    });
 }
 
 function moveRight() {
-    if (isMovable(TOP_PADDING, RIGHT_PADDING - 1, BLOCK)) {
-        RIGHT_PADDING -= 1;
-        printMovementLog('right');
-        updateMovingBlock();
-    }
-    printMovementLog('right', 0);
+    lockMutex(() => {
+        if (isMovable(TOP_PADDING, RIGHT_PADDING - 1, BLOCK)) {
+            RIGHT_PADDING -= 1;
+            printMovementLog('right');
+            updateMovingBlock();
+        }
+        printMovementLog('right', 0);
+    })
 }
 
 function moveDown() {
-    if (isMovable(TOP_PADDING + 1, RIGHT_PADDING, BLOCK)) {
-        TOP_PADDING += 1;
-        printMovementLog('down');
-        updateMovingBlock();
-    } else {
-        fixBlock(TOP_PADDING, RIGHT_PADDING, BLOCK);
-        updateFixedCells();
-        printLog(`${BLOCK.name} touched the bottom.`);
-        eliminateFullRows();
-        initBlock();
-        displayNextBlock();
-    }
+    lockMutex(() => {
+        if (isMovable(TOP_PADDING + 1, RIGHT_PADDING, BLOCK)) {
+            TOP_PADDING += 1;
+            printMovementLog('down');
+            updateMovingBlock();
+        } else {
+            fixBlock(TOP_PADDING, RIGHT_PADDING, BLOCK);
+            updateFixedCells();
+            printLog(`${BLOCK.name} touched the bottom.`);
+            eliminateFullRows();
+            initBlock();
+            displayNextBlock();
+        }
+    });
 }
 
 function rotateBlock() {
-    if (isMovable(TOP_PADDING, RIGHT_PADDING, blocks[BLOCK.index][BLOCK.next])) {
-        BLOCK = blocks[BLOCK.index][BLOCK.next];
-        printLog(`Rotate block to ${BLOCK.name}`);
-    } else {
-        printLog(`Failed to rotate block ${BLOCK.name}`);
-    }
+    lockMutex(() => {
+        if (isMovable(TOP_PADDING, RIGHT_PADDING, blocks[BLOCK.index][BLOCK.next])) {
+            BLOCK = blocks[BLOCK.index][BLOCK.next];
+            printLog(`Rotate block to ${BLOCK.name}`);
+        } else {
+            printLog(`Failed to rotate block ${BLOCK.name}`);
+        }
+    });
 }
 
 function eliminateFullRows() {
@@ -424,5 +408,6 @@ function initGame() {
 }
 
 $(document).ready(() => {
+    $('.background-img').backstretch('image/bg1.jpg');
     initGame();
 });

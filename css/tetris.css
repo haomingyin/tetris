@@ -3,43 +3,53 @@
     src: url("digital-7-mono.ttf");
 }
 
+.background-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    filter: blur(5px);
+    z-index: -1;
+}
+
 .tetris {
-    background-color: #f9f9f9;
+    background-color: rgba(255, 255, 255, 0.1);
     width: 100vw;
     height: 100vh;
 }
 
 .tetris-col {
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 45px;
     margin: 1px;
-    background-color: #e2e2e2;
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .tetris-empty {
-    background-color: #e2e2e2;
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .tetris-fixed, .tetris-next-fixed, .tetris-moving {
-    background-color: #919191;
+    background-color: rgba(255, 255, 255, 0.55);
 }
 
 .tetris-cancel {
-    background-color: #ff8383;
+    background-color: rgba(255, 131, 131, 0.8);
 }
 
 #tetris-score-panel {
-    font-size: 22px;
-    color: #575757;
+    font-size: 25px;
+    color: rgba(0, 0, 0, 0.65);
 }
 
 #tetris-next-block {
-    height: 150px;
+    height: 200px;
     width: 150px;
 }
 
 #tetris-points, #tetris-level {
     font-family: "digital-7-mono";
-    font-size: 32px;
-    color: #858585;
+    font-size: 35px;
+    color: rgba(0, 0, 0, 0.5);
 }
