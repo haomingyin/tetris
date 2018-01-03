@@ -8,6 +8,10 @@ const CELL_STATUS_FIXED = 'tetris-fixed';
 const CELL_STATUS_CANCEL = 'tetris-cancel';
 const CELL_STATUS_NEXT_FIXED = 'tetris-next-fixed';
 
+const ANIMATION_FADE_DURATION = 150;
+
+const GAME_SPEEDUP_FACTOR = 0.8;
+
 let GAME_STEP_TIMER;
 let GAME_POINTS;
 let GAME_LEVEL;
@@ -70,7 +74,7 @@ function initNextBlock() {
 }
 
 function initGamePoints() {
-    GAME_POINTS = 0;
+    GAME_POINTS = 900;
     displayGamePoints();
 }
 
@@ -230,25 +234,27 @@ function displayGameLevel(level = GAME_LEVEL) {
 }
 
 function showInfoPane() {
-    $('#tetris-board-info-pane').show();
-    $('#tetris-board-info-bg').show();
+    $('#tetris-board-info-pane').fadeIn(ANIMATION_FADE_DURATION);
+    $('#tetris-board-info-bg').fadeIn(ANIMATION_FADE_DURATION);
     $('#tetris-board').addClass('tetris-blur');
 }
 
 function hideInfoPane() {
     $('#tetris-board').removeClass('tetris-blur');
-    $('#tetris-board-info-bg').hide();
-    $('#tetris-board-info-pane').hide();
+    $('#tetris-board-info-bg').fadeOut(ANIMATION_FADE_DURATION);
+    $('#tetris-board-info-pane').fadeOut(ANIMATION_FADE_DURATION);
 }
 
 function showResume() {
     showInfoPane();
-    $('#tetris-board-info-resume').show();
+    $('#tetris-board-info-resume').fadeIn(ANIMATION_FADE_DURATION);
+    $('#tetris-toolbar-pause').fadeOut(ANIMATION_FADE_DURATION);
 }
 
 function hideResume() {
     hideInfoPane();
-    $('#tetris-board-info-resume').hide();
+    $('#tetris-board-info-resume').fadeOut(ANIMATION_FADE_DURATION);
+    $('#tetris-toolbar-pause').fadeIn(ANIMATION_FADE_DURATION);
 }
 
 function setCellStatus(row, col, status = CELL_STATUS_EMPTY) {
@@ -305,11 +311,11 @@ function bindGestures() {
     hammer.on('swiperight', moveRight);
     hammer.on('swipedown', moveDown);
     hammer.on('swipeup', rotateBlock);
-    hammer.on('doubletap', pauseGame);
 }
 
 function bindClicks() {
     $('#tetris-board-info-resume').on('click', pauseGame);
+    $('#tetris-toolbar-pause').on('click', pauseGame);
 }
 
 function initControllers() {
@@ -420,7 +426,7 @@ function eliminateFullRows() {
 function speedUpGame() {
     GAME_LEVEL += 1;
     stopTimer();
-    GAME_INTERVAL = 800 * Math.pow(0.9, GAME_LEVEL);
+    GAME_INTERVAL = 800 * Math.pow(GAME_SPEEDUP_FACTOR, GAME_LEVEL);
     setUpTimer();
 }
 

@@ -18,13 +18,29 @@
 }
 
 .tetris {
-    background-color: rgba(255, 255, 255, 0.1);
     width: 100vw;
     height: 100vh;
 }
 
 #tetris-board-container {
     position: relative;
+}
+
+/* tetris top tool bar */
+#tetris-toolbar {
+    position: absolute;
+    height: 100px;
+    top: 0;
+    left: 0;
+    padding: 10px 20px;
+    font-size: 45px;
+    color: rgba(255, 255, 255, 0.85);
+    z-index: 10;
+}
+
+#tetris-toolbar a:hover {
+    color: rgba(255, 255, 255, 0.99);
+    cursor: pointer;
 }
 
 /* tetris board info pane */
@@ -42,7 +58,7 @@
 
 #tetris-board-info-bg {
     z-index: 2;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
     filter: blur(4px);
 }
 
@@ -67,7 +83,7 @@
     width: 45px;
     height: 45px;
     margin: 1px;
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .tetris-empty {
@@ -96,5 +112,6 @@
 #tetris-points, #tetris-level {
     font-family: "digital-7-mono";
     font-size: 50px;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 3px;
 }
