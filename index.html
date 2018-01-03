@@ -10,17 +10,23 @@
 </head>
 <body>
 <div id="tetris-toolbar">
-    <a><i class="far fa-question-circle"></i></a>
-    <a id="tetris-toolbar-pause"><i class="far fa-pause-circle"></i></a>
+    <a><i class="fas fa-cog"></i></a>
+    <a id="tetris-toolbar-restart"><i class="fas fa-undo-alt"></i></a>
+    <a id="tetris-toolbar-pause"><i class="fas fa-pause"></i></a>
 </div>
 <div class="background-img"></div>
 <div class="tetris d-flex flex-row align-items-center justify-content-center">
     <div id="tetris-board-container">
         <div id="tetris-board" class="d-flex flex-column align-self-center"></div>
-        <div id="tetris-board-info-pane" class="d-flex flex-column justify-content-center align-items-center">
+        <div id="tetris-board-info-pane"
+             class="tetris-board-info-pane d-flex flex-column justify-content-center align-items-center">
             <div id="tetris-board-info-bg"></div>
             <div id="tetris-board-info-resume">
-                <i class="far fa-play-circle"></i>
+                <a><i class="far fa-play-circle"></i></a>
+            </div>
+            <div id="tetris-board-info-gameover" class="d-flex flex-column align-items-center">
+                <p>YOU ARE LOSER</p>
+                <a id="tetris-board-info-restart"><i class="fas fa-undo-alt"></i></a>
             </div>
         </div>
 

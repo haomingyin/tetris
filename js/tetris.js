@@ -15,7 +15,7 @@ const GAME_SPEEDUP_FACTOR = 0.8;
 let GAME_STEP_TIMER;
 let GAME_POINTS;
 let GAME_LEVEL;
-let GAME_INTERVAL;
+let GAME_INTERVAL = 800;
 
 let BITS_FIXED;
 let BLOCK;
@@ -43,7 +43,7 @@ function waitAndLockMutex(cb) {
     if (!testAndSetMutex()) {
         cb();
     } else {
-        setTimeout(waitAndLockMutex, 0);
+        setTimeout(() => waitAndLockMutex(cb), 0);
     }
 }
 
@@ -74,7 +74,7 @@ function initNextBlock() {
 }
 
 function initGamePoints() {
-    GAME_POINTS = 900;
+    GAME_POINTS = 0;
     displayGamePoints();
 }
 
@@ -105,6 +105,16 @@ function isMovable(topPadding, rightPadding, block) {
         }
     }
     return true;
+}
+
+/**
+ * It much depends on how the initial top padding is generated
+ * @param topPadding
+ * @param block
+ * @returns {boolean}
+ */
+function isGameOver(topPadding, block) {
+    return topPadding < 0;
 }
 
 function printLog(message) {
@@ -233,28 +243,37 @@ function displayGameLevel(level = GAME_LEVEL) {
     $('#tetris-level').text(level);
 }
 
-function showInfoPane() {
-    $('#tetris-board-info-pane').fadeIn(ANIMATION_FADE_DURATION);
-    $('#tetris-board-info-bg').fadeIn(ANIMATION_FADE_DURATION);
+function initInfoPane(duration=ANIMATION_FADE_DURATION) {
+    hideResume(duration);
+    hideGameOver(duration);
+    $('#tetris-board-info-bg').fadeIn(duration);
     $('#tetris-board').addClass('tetris-blur');
 }
 
-function hideInfoPane() {
+function hideInfoPane(duration=ANIMATION_FADE_DURATION) {
+    initInfoPane(0);
     $('#tetris-board').removeClass('tetris-blur');
-    $('#tetris-board-info-bg').fadeOut(ANIMATION_FADE_DURATION);
-    $('#tetris-board-info-pane').fadeOut(ANIMATION_FADE_DURATION);
+    $('#tetris-board-info-bg').fadeOut(duration);
 }
 
-function showResume() {
-    showInfoPane();
-    $('#tetris-board-info-resume').fadeIn(ANIMATION_FADE_DURATION);
-    $('#tetris-toolbar-pause').fadeOut(ANIMATION_FADE_DURATION);
+function showResume(duration=ANIMATION_FADE_DURATION) {
+    initInfoPane(0);
+    $('#tetris-board-info-resume').fadeIn(duration);
+    $('#tetris-toolbar-pause').fadeOut(duration);
 }
 
-function hideResume() {
-    hideInfoPane();
-    $('#tetris-board-info-resume').fadeOut(ANIMATION_FADE_DURATION);
-    $('#tetris-toolbar-pause').fadeIn(ANIMATION_FADE_DURATION);
+function hideResume(duration=ANIMATION_FADE_DURATION) {
+    $('#tetris-board-info-resume').fadeOut(duration);
+    $('#tetris-toolbar-pause').fadeIn(duration);
+}
+
+function showGameOver(duration=ANIMATION_FADE_DURATION) {
+    initInfoPane(0);
+    $('#tetris-board-info-gameover').children().fadeIn(duration);
+}
+
+function hideGameOver(duration=ANIMATION_FADE_DURATION) {
+    $('#tetris-board-info-gameover').children().fadeOut(duration);
 }
 
 function setCellStatus(row, col, status = CELL_STATUS_EMPTY) {
@@ -279,7 +298,11 @@ function bindKeyStrokes() {
     $(document).keydown(e => {
         switch (e.which) {
             case 13: // ENTER
-                pauseGame();
+                if (GAME_PAUSED) {
+                    resumeGame();
+                } else {
+                    pauseGame();
+                }
                 break;
             case 32: // space
                 rotateBlock();
@@ -314,8 +337,10 @@ function bindGestures() {
 }
 
 function bindClicks() {
-    $('#tetris-board-info-resume').on('click', pauseGame);
+    $('#tetris-board-info-resume').on('click', resumeGame);
+    $('#tetris-toolbar-restart').on('click', restartGame);
     $('#tetris-toolbar-pause').on('click', pauseGame);
+    $('#tetris-board-info-restart').on('click', restartGame);
 }
 
 function initControllers() {
@@ -324,32 +349,38 @@ function initControllers() {
     bindClicks();
 }
 
-function stopTimer() {
-    clearInterval(GAME_STEP_TIMER);
+function stopTimer(interval=GAME_STEP_TIMER) {
+    clearInterval(interval);
 }
 
 function setUpTimer(interval = GAME_INTERVAL) {
+    stopTimer(interval);
     GAME_STEP_TIMER = setInterval(() => {
         moveDown();
     }, interval);
 }
 
-function pauseGame() {
+function pauseGame(showResumeBtn=true) {
     if (!GAME_PAUSED) {
         waitAndLockMutex(() => {
             GAME_PAUSED = true;
             stopTimer();
-            showResume();
+            if (showResumeBtn) {
+                showResume();
+            }
             printLog('Game has been paused.');
         });
-    } else {
+    }
+}
+
+function resumeGame() {
+    if (GAME_PAUSED) {
         GAME_PAUSED = false;
         setUpTimer();
-        hideResume();
+        hideInfoPane();
         printLog('Game has been resumed.');
         unlockMutex();
     }
-
 }
 
 function moveLeft() {
@@ -385,6 +416,8 @@ function moveDown() {
             updateFixedCells();
             printLog(`${BLOCK.name} touched the bottom.`);
             eliminateFullRows();
+            updateGameStatus();
+
             initBlock();
             displayNextBlock();
         }
@@ -442,18 +475,39 @@ function updateGamePoints(combo = 1) {
     displayGamePoints();
 }
 
+function updateGameStatus() {
+    if (isGameOver(TOP_PADDING, BLOCK)) {
+        unlockMutex();
+        pauseGame(false); // pause game but do not show resume pane
+        showGameOver();
+        printLog('Game over.');
+    }
+}
+
+function restartGame() {
+    unlockMutex();
+    GAME_PAUSED = false;
+    stopTimer();
+    hideInfoPane();
+    printLog('Restarted a new game.');
+    initGame();
+}
+
+/* Game initializer */
+
 function initGame() {
     initGamePoints();
     initGameLevel();
-    GAME_INTERVAL = 800;
     initBoard(ROW, COL);
     initBlock();
     displayNextBlock();
-    initControllers();
-    pauseGame();
+    setUpTimer();
 }
 
 $(document).ready(() => {
     $('.background-img').backstretch('image/bg1.jpg');
+    initControllers();
+    hideInfoPane(0);
     initGame();
+    pauseGame();
 });
