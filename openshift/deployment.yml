@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: tetris
+spec:
+  replicas: 2
+  selector:
+    name: tetris
+  strategy:
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        name: tetris
+        app: tetris
+    spec:
+      containers:
+        - name: tetris
+          # myproject is the project. change it accordingly.
+          image: myproject/tetris-is
+          ports:
+            - containerPort: 8081
+          livenessProbe:
+            tcpSocket:
+              port: 8081
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        from:
+          kind: ImageStreamTag
+          name: tetris-is:latest
+        containerNames:
+          - tetris

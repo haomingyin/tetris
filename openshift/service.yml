@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tetris-svc
+spec:
+  selector:
+    app: tetris
+  ports:
+  - nodePort:
+    port: 8081
+    protocol: TCP
+    targetPort: 8081
