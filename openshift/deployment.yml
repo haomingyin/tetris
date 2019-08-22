@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: tetris
-          # myproject is the project. change it accordingly.
-          image: myproject/tetris-is
+          # tetris is the project name. Change it accordingly if the project is named differently.
+          image: tetris/tetris-is
           ports:
             - containerPort: 8081
           livenessProbe:
